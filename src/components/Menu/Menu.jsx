@@ -1,18 +1,11 @@
 import styled from "styled-components";
 import { darkGreen } from "../UI/variables";
 
-const Container = styled.div`
-    box-sizing: border-box;
-    height: 100vh;
-    width: auto;
-
-    border: 1px solid black;
-`;
-
 const NavBar = styled.nav`
     align-items: center;
     display: flex;
     height: 100vh;
+    width: fit-content;
 
     ul {
         list-style-type: none;
@@ -37,17 +30,15 @@ const NavBar = styled.nav`
 
 const Menu = () => {
     return (
-        <Container>
-            <NavBar>
-                <ul>
-                    <li>Novo Animal</li>
-                    <li>Editar Dados</li>
-                    <li>Votação</li>
-                    <li>Listagem</li>
-                    <li>Novo Zelador</li>
-                </ul>
-            </NavBar>
-        </Container>
+        <NavBar>
+            <ul>
+                <li>Novo Animal</li>
+                <li>Editar Dados</li>
+                <li>Votação</li>
+                <li>Listagem</li>
+                <li>Novo Zelador</li>
+            </ul>
+        </NavBar>
     );
 };
 
