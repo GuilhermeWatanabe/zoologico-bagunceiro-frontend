@@ -352,7 +352,9 @@ export const GlobalStyle = createGlobalStyle`
 	}
 
     #root {
+        display: flex;
         font-family: 'Roboto', sans-serif;
+        height: 100vh;
+        width: 100vw;
     }
-
 `;

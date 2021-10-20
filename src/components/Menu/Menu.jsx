@@ -3,7 +3,7 @@ import { darkGreen } from "../UI/variables";
 
 const NavBar = styled.nav`
     align-items: center;
-    display: flex;
+    display: inline-flex;
     height: 100vh;
     width: fit-content;
 
