@@ -1,5 +1,14 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { baseRadius, darkGreen } from "./variables";
+
+export const baseCard = css`
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    width: 30%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+`;
 
 export const BaseInput = styled.input`
     border: none;
@@ -47,12 +56,4 @@ export const BaseContainer = styled.div`
     justify-content: center;
     height: 100%;
     width: 100%;
-`;
-
-export const BaseFormCard = styled.form`
-    display: flex;
-    flex-direction: column;
-    padding: 2em;
-    width: 30%;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 `;

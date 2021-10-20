@@ -1,8 +1,13 @@
-import { BaseFormLegend, BaseInput, BaseButton, BaseFormCard } from "../UI";
+import { BaseFormLegend, BaseInput, BaseButton, BaseFormCard, baseCard } from "../UI";
+import styled from "styled-components";
+
+const Form = styled.form`
+    ${baseCard};
+`;
 
 const NewAnimal = () => {
     return (
-        <BaseFormCard>
+        <Form>
             <BaseFormLegend>Novo Animal</BaseFormLegend>
             <BaseInput sizeW={`100%`} type="text" placeholder="Apelido" />
             <BaseInput
@@ -24,7 +29,7 @@ const NewAnimal = () => {
             <BaseButton type="submit">
                 Cadastrar
             </BaseButton>
-        </BaseFormCard>
+        </Form>
     );
 };
 
