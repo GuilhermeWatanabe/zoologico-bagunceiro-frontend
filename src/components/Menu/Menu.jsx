@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { darkGreen } from "../UI/variables";
+import { darkGreen, lightRed } from "../UI/variables";
 
 const NavBar = styled.nav`
     align-items: center;
@@ -25,6 +25,17 @@ const NavBar = styled.nav`
                 color: ${darkGreen};
             }
         }
+
+        li:last-child {
+            background-color: white;
+            border: 1px solid ${lightRed};
+            color: ${lightRed};
+
+            &:hover {
+                background-color: ${lightRed};
+                color: white;
+            }
+        }
     }
 `;
 
@@ -37,6 +48,7 @@ const Menu = () => {
                 <li>Votação</li>
                 <li>Listagem</li>
                 <li>Novo Zelador</li>
+                <li>Sair</li>
             </ul>
         </NavBar>
     );
