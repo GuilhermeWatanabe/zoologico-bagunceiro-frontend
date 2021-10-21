@@ -1,7 +1,8 @@
 import NewAnimal from "../../components/NewAnimal/NewAnimal";
+import NewJanitor from "../../components/NewJanitor/NewJanitor";
 
 const Register = () => {
-    return(<NewAnimal />);
+    return(<NewJanitor />);
 }
 
 export default Register;

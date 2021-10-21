@@ -1,5 +1,5 @@
-import { BaseFormLegend, BaseInput, BaseButton, baseCard } from "../UI";
 import styled from "styled-components";
+import { BaseFormLegend, BaseInput, BaseButton, baseCard } from "../UI";
 
 const Form = styled.form`
     ${baseCard};
