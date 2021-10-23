@@ -16,14 +16,17 @@ const App = () => {
                 <Route path="/login">
                     <Login />
                 </Route>
-                <Route path="/register">
-                    <Register />
+                <Route path="/register/animal">
+                    <Register page="animal" />
                 </Route>
                 <Route path="/voting">
                     <Voting />
                 </Route>
                 <Route path="/list">
                     <AnimalList />
+                </Route>
+                <Route path="/register/janitor">
+                    <Register page="janitor" />
                 </Route>
             </BaseContainer>
         </BrowserRouter>
