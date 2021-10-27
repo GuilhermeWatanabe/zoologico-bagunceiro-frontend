@@ -31,39 +31,49 @@ const NavBar = styled.nav`
       }
     }
 
-    & > li:last-child {
-      background-color: white;
-      border: 1px solid ${lightRed};
-      color: ${lightRed};
+    a:last-child {
+      li {
+        background-color: white;
+        border: 1px solid ${lightRed};
+        color: ${lightRed};
 
-      &:hover {
-        background-color: ${lightRed};
-        color: white;
+        &:hover {
+          background-color: ${lightRed};
+          color: white;
+        }
       }
     }
   }
 `;
 
-const Menu = () => {
+const Menu = ({ userType }) => {
   return (
     <NavBar>
       <ul>
-        <Link to="/register/animal">
-          <li>Novo Animal</li>
-        </Link>
+        {userType === "janitor" ? (
+          <>
+            <Link to="/register/animal">
+              <li>Novo Animal</li>
+            </Link>
+            <Link to="/register/janitor">
+              <li>Novo Zelador</li>
+            </Link>
+            <Link to="/list">
+              <li>Listagem</li>
+            </Link>
+          </>
+        ) : (
+          ""
+        )}
         <Link to="/edit/animal">
           <li>Editar Dados</li>
         </Link>
         <Link to="/voting">
           <li>Votação</li>
         </Link>
-        <Link to="/list">
-          <li>Listagem</li>
+        <Link to="/logout">
+          <li>Sair</li>
         </Link>
-        <Link to="/register/janitor">
-          <li>Novo Zelador</li>
-        </Link>
-        <li>Sair</li>
       </ul>
     </NavBar>
   );

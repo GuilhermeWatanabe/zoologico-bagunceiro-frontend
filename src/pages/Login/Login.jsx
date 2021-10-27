@@ -1,4 +1,8 @@
+import { useState } from "react";
+import { Redirect } from "react-router";
+import { toast } from "react-toastify";
 import styled from "styled-components";
+import { instance } from "../../api/AxiosConfig";
 import { BaseButton, BaseFormLegend, BaseInput } from "../../components/UI";
 
 const Container = styled.div`
@@ -25,7 +29,33 @@ const Form = styled.form`
   width: 50%;
 `;
 
-const Login = () => {
+const Login = ({ setUserType, setUserId }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [redirect, setRedirect] = useState(false);
+
+  const signIn = () => {
+    instance
+      .post("login", {
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        instance.defaults.headers.common["Authorization"] =
+          response.data.access_token;
+        setUserType(response.data.user_type);
+        setUserId(response.data.id);
+        setRedirect(true);
+      })
+      .catch(() => {
+        toast.error("Credenciais inválidas.");
+      });
+  };
+
+  if (redirect === true) {
+    return <Redirect to="/voting" />;
+  }
+
   return (
     <Container>
       <Register>
@@ -36,10 +66,26 @@ const Login = () => {
           <BaseButton>Cadastrar novo Zelador</BaseButton>
         </a>
       </Register>
-      <Form>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          signIn();
+        }}
+      >
         <BaseFormLegend>Login</BaseFormLegend>
-        <BaseInput sizeW={`100%`} type="email" placeholder="Email" required />
         <BaseInput
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          sizeW={`100%`}
+          type="email"
+          placeholder="Email"
+          required
+        />
+        <BaseInput
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
           sizeW={`100%`}
           type="password"
           placeholder="Senha"

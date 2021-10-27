@@ -9,14 +9,21 @@ import Voting from "./pages/Voting/Voting";
 import { ToastContainer } from "react-toastify";
 import AnimalForm from "./components/AnimalForm/AnimalForm";
 import NewJanitor from "./components/NewJanitor/NewJanitor";
+import { Redirect } from "react-router";
 import { useState } from "react";
 
 const App = () => {
-  const [user, setUser] = useState(1);
+  const [userId, setUserId] = useState(0);
+  const [userType, setUserType] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   let renderMenu;
-  if(user) {
-    renderMenu = <Menu />;
+  if (userId) {
+    renderMenu = <Menu userType={userType} />;
+  }
+
+  if (redirect === true) {
+    return <Redirect to="/" />;
   }
 
   return (
@@ -26,13 +33,13 @@ const App = () => {
       {renderMenu}
       <BaseContainer>
         <Route exact path="/">
-          <Login />
+          <Login setUserType={setUserType} setUserId={setUserId} />
         </Route>
         <Route path="/register/animal">
-          <AnimalForm userId={user} />
+          <AnimalForm userId={userId} />
         </Route>
         <Route path="/edit/animal">
-          <AnimalForm userId={user} />
+          <AnimalForm userId={userId} />
         </Route>
         <Route path="/voting">
           <Voting />
@@ -41,7 +48,7 @@ const App = () => {
           <AnimalList />
         </Route>
         <Route path="/register/janitor">
-          <NewJanitor userId={user} />
+          <NewJanitor userId={userId} />
         </Route>
       </BaseContainer>
     </BrowserRouter>
