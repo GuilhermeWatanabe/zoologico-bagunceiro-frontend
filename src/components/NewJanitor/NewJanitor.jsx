@@ -9,7 +9,7 @@ const Form = styled.form`
   ${baseCard};
 `;
 
-const NewJanitor = ({userId}) => {
+const NewJanitor = ({ userId }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +25,7 @@ const NewJanitor = ({userId}) => {
       .then((response) => {
         console.log(response);
         toast.success("Cadastrado com sucesso!");
-        if(!userId) {
+        if (!userId) {
           setRedirect(true);
         }
       })
@@ -36,7 +36,7 @@ const NewJanitor = ({userId}) => {
   };
 
   if (redirect === true) {
-    return <Redirect to="/login" />;
+    return <Redirect to="/" />;
   }
 
   return (

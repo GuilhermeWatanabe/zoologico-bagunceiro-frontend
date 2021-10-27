@@ -12,7 +12,7 @@ import NewJanitor from "./components/NewJanitor/NewJanitor";
 import { useState } from "react";
 
 const App = () => {
-  const [user, setUser] = useState(1);
+  const [user, setUser] = useState(0);
 
   let renderMenu;
   if(user) {
@@ -25,11 +25,11 @@ const App = () => {
       <ToastContainer />
       {renderMenu}
       <BaseContainer>
-        <Route path="/login">
+        <Route exact path="/">
           <Login />
         </Route>
         <Route path="/register/animal">
-          <AnimalForm />
+          <AnimalForm userId={user} />
         </Route>
         <Route path="/edit/animal">
           <AnimalForm userId={user} />

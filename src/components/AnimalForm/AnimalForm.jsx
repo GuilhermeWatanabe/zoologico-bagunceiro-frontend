@@ -77,7 +77,7 @@ const AnimalForm = ({ userId }) => {
   };
 
   if (redirect === true) {
-    return <Redirect to="/login" />;
+    return <Redirect to="/" />;
   }
 
   return (
