@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { baseCard, BaseFormLegend, BaseInput, BaseButton } from "../UI";
 import { useState } from "react";
 import { instance } from "../../api/AxiosConfig";
+import { toast } from "react-toastify";
 
 const Form = styled.form`
   ${baseCard};
@@ -22,9 +23,11 @@ const NewJanitor = () => {
       })
       .then((response) => {
         console.log(response);
+        toast.success("Cadastrado com sucesso!");
       })
       .catch((response) => {
         console.log(response);
+        toast.error("Erro ao cadastrar.");
       });
   };
 
