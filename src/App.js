@@ -9,21 +9,15 @@ import Voting from "./pages/Voting/Voting";
 import { ToastContainer } from "react-toastify";
 import AnimalForm from "./components/AnimalForm/AnimalForm";
 import NewJanitor from "./components/NewJanitor/NewJanitor";
-import { Redirect } from "react-router";
 import { useState } from "react";
 
 const App = () => {
   const [userId, setUserId] = useState(0);
   const [userType, setUserType] = useState("");
-  const [redirect, setRedirect] = useState(false);
 
   let renderMenu;
   if (userId) {
     renderMenu = <Menu userType={userType} />;
-  }
-
-  if (redirect === true) {
-    return <Redirect to="/" />;
   }
 
   return (

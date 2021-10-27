@@ -1,6 +1,10 @@
 import styled from "styled-components";
+import { Redirect } from "react-router";
 import { darkGreen, lightRed } from "../UI/variables";
 import { Link } from "react-router-dom";
+import { instance } from "../../api/AxiosConfig";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const NavBar = styled.nav`
   align-items: center;
@@ -47,6 +51,23 @@ const NavBar = styled.nav`
 `;
 
 const Menu = ({ userType }) => {
+  const [redirect, setRedirect] = useState(false);
+
+  const logout = () => {
+    instance
+      .post("logout")
+      .then(() => {
+        setRedirect(true);
+      })
+      .catch(() => {
+        toast.error("Não foi possivel fazer logout.");
+      });
+  };
+
+  if (redirect === true) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <NavBar>
       <ul>
@@ -63,17 +84,22 @@ const Menu = ({ userType }) => {
             </Link>
           </>
         ) : (
-          ""
+          <>
+            <Link to="/edit/animal">
+              <li>Editar Dados</li>
+            </Link>
+            <Link to="/voting">
+              <li>Votação</li>
+            </Link>
+          </>
         )}
-        <Link to="/edit/animal">
-          <li>Editar Dados</li>
-        </Link>
-        <Link to="/voting">
-          <li>Votação</li>
-        </Link>
-        <Link to="/logout">
-          <li>Sair</li>
-        </Link>
+        <li
+          onClick={() => {
+            logout();
+          }}
+        >
+          Sair
+        </li>
       </ul>
     </NavBar>
   );

@@ -32,7 +32,6 @@ const AnimalList = () => {
     instance
       .get("animal")
       .then((response) => {
-        console.log(response);
         setAnimalList(response.data);
       })
       .catch(() => {
@@ -54,7 +53,7 @@ const AnimalList = () => {
         </thead>
         <tbody>
           {animalList.map((animal) => (
-            <tr>
+            <tr key={animal}>
               <td>{animal.nickname}</td>
               <td>{animal.likes}</td>
               <td>{animal.dislikes}</td>
