@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BaseFormLegend, BaseInput, BaseButton, baseCard } from "../UI";
 import { instance } from "../../api/AxiosConfig";
@@ -9,7 +9,7 @@ const Form = styled.form`
   ${baseCard};
 `;
 
-const NewAnimal = () => {
+const NewAnimal = ({ userId }) => {
   const [nickname, setNickname] = useState("");
   const [sciName, setSciName] = useState("");
   const [zooWing, setZooWing] = useState("");
@@ -17,6 +17,42 @@ const NewAnimal = () => {
   const [password, setPassword] = useState("");
   const [image, setImage] = useState();
   const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (userId) {
+      instance
+        .get(`animal/${userId}`)
+        .then((response) => {
+          setNickname(response.data.nickname);
+          setSciName(response.data.scientific_name);
+          setZooWing(response.data.zoo_wing);
+          setEmail(response.data.email);
+        })
+        .catch(() => {
+          toast.error("Erro ao buscar usuário.");
+        });
+    }
+  }, []);
+
+  const editAnimal = () => {
+    const form = new FormData();
+    form.append("nickname", nickname);
+    form.append("scientific_name", sciName);
+    form.append("zoo_wing", zooWing);
+    form.append("password", password);
+    form.append("image", image);
+
+    instance
+      .patch("animal", form, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(() => {
+        toast.success("Editado com sucesso!");
+      })
+      .catch(() => {
+        toast.error("Erro ao editar.");
+      });
+  };
 
   const registerAnimal = () => {
     const form = new FormData();
@@ -31,13 +67,11 @@ const NewAnimal = () => {
       .post("animal", form, {
         headers: { "Content-Type": "multipart/form-data" },
       })
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         toast.success("Cadastrado com sucesso!");
         setRedirect(true);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
         toast.error("Erro ao cadastrar.");
       });
   };
@@ -50,7 +84,11 @@ const NewAnimal = () => {
     <Form
       onSubmit={(e) => {
         e.preventDefault();
-        registerAnimal();
+        if (userId) {
+          editAnimal();
+        } else {
+          registerAnimal();
+        }
       }}
     >
       <BaseFormLegend>Novo Animal</BaseFormLegend>
@@ -61,6 +99,7 @@ const NewAnimal = () => {
         sizeW={`100%`}
         type="text"
         placeholder="Apelido"
+        value={nickname}
         required
       />
       <BaseInput
@@ -70,6 +109,7 @@ const NewAnimal = () => {
         sizeW={`100%`}
         type="text"
         placeholder="Nome científico"
+        value={sciName}
         required
       />
       <BaseInput
@@ -79,6 +119,7 @@ const NewAnimal = () => {
         sizeW={`100%`}
         type="text"
         placeholder="Ala do Zoológico"
+        value={zooWing}
         required
       />
       <BaseInput
@@ -88,6 +129,7 @@ const NewAnimal = () => {
         sizeW={`100%`}
         type="email"
         placeholder="E-mail"
+        value={email}
         required
       />
       <BaseInput
