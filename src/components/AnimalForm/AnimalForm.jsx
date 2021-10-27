@@ -9,7 +9,7 @@ const Form = styled.form`
   ${baseCard};
 `;
 
-const NewAnimal = ({ userId }) => {
+const AnimalForm = ({ userId }) => {
   const [nickname, setNickname] = useState("");
   const [sciName, setSciName] = useState("");
   const [zooWing, setZooWing] = useState("");
@@ -153,4 +153,4 @@ const NewAnimal = ({ userId }) => {
   );
 };
 
-export default NewAnimal;
+export default AnimalForm;

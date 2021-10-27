@@ -7,12 +7,12 @@ import { BaseContainer } from "./components/UI";
 import AnimalList from "./pages/AnimalList/AnimalList";
 import Voting from "./pages/Voting/Voting";
 import { ToastContainer } from "react-toastify";
-import NewAnimal from "./components/NewAnimal/NewAnimal";
+import AnimalForm from "./components/AnimalForm/AnimalForm";
 import NewJanitor from "./components/NewJanitor/NewJanitor";
 import { useState } from "react";
 
 const App = () => {
-  const [user, setUser] = useState(0);
+  const [user, setUser] = useState(1);
 
   let renderMenu;
   if(user) {
@@ -29,10 +29,10 @@ const App = () => {
           <Login />
         </Route>
         <Route path="/register/animal">
-          <NewAnimal />
+          <AnimalForm />
         </Route>
         <Route path="/edit/animal">
-          <NewAnimal userId={user} />
+          <AnimalForm userId={user} />
         </Route>
         <Route path="/voting">
           <Voting />
@@ -41,7 +41,7 @@ const App = () => {
           <AnimalList />
         </Route>
         <Route path="/register/janitor">
-          <NewJanitor />
+          <NewJanitor userId={user} />
         </Route>
       </BaseContainer>
     </BrowserRouter>

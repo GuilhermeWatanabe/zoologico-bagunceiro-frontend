@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { BaseButton, BaseFormLegend, BaseInput } from "../../components/UI";
-import { useState } from "react";
 
 const Container = styled.div`
   box-sizing: border-box;
