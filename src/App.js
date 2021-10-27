@@ -12,7 +12,7 @@ import NewJanitor from "./components/NewJanitor/NewJanitor";
 import { useState } from "react";
 
 const App = () => {
-  const [user, setUser] = useState(0);
+  const [user, setUser] = useState(1);
 
   let renderMenu;
   if(user) {
