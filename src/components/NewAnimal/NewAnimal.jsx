@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useState } from "react";
 import styled from "styled-components";
 import { BaseFormLegend, BaseInput, BaseButton, baseCard } from "../UI";
 
@@ -6,29 +8,95 @@ const Form = styled.form`
 `;
 
 const NewAnimal = () => {
+    const [nickname, setNickname] = useState("");
+    const [sciName, setSciName] = useState("");
+    const [zooWing, setZooWing] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [image, setImage] = useState();
+
+    const registerAnimal = () => {
+        const form = new FormData();
+        form.append("nickname", nickname);
+        form.append("scientific_name", sciName);
+        form.append("zoo_wing", zooWing);
+        form.append("email", email);
+        form.append("password", password);
+        form.append("image", image);
+
+        axios
+            .post("localot:8000/api/animal", form, {
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     return (
-        <Form>
+        <Form
+            onSubmit={(e) => {
+                e.preventDefault();
+                registerAnimal();
+            }}
+        >
             <BaseFormLegend>Novo Animal</BaseFormLegend>
-            <BaseInput sizeW={`100%`} type="text" placeholder="Apelido" />
             <BaseInput
+                onChange={(e) => {
+                    setNickname(e.target.value);
+                }}
+                sizeW={`100%`}
+                type="text"
+                placeholder="Apelido"
+                required
+            />
+            <BaseInput
+                onChange={(e) => {
+                    setSciName(e.target.value);
+                }}
                 sizeW={`100%`}
                 type="text"
                 placeholder="Nome científico"
+                required
             />
             <BaseInput
+                onChange={(e) => {
+                    setZooWing(e.target.value);
+                }}
                 sizeW={`100%`}
                 type="text"
                 placeholder="Ala do Zoológico"
+                required
             />
             <BaseInput
+                onChange={(e) => {
+                    setEmail(e.target.value);
+                }}
+                sizeW={`100%`}
+                type="email"
+                placeholder="E-mail"
+                required
+            />
+            <BaseInput
+                onChange={(e) => {
+                    setPassword(e.target.value);
+                }}
                 sizeW={`100%`}
                 type="password"
-                placeholder="Confirmar senha"
+                placeholder="Senha"
+                required
             />
-            <input type="file" />
-            <BaseButton type="submit">
-                Cadastrar
-            </BaseButton>
+            <input
+                onChange={(e) => {
+                    setImage(e.target.files[0]);
+                }}
+                type="file"
+                required
+            />
+            <BaseButton type="submit">Cadastrar</BaseButton>
         </Form>
     );
 };
