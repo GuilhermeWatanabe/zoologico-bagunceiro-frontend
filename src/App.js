@@ -3,11 +3,12 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { GlobalStyle } from "./components/GlobalStyle";
 import Menu from "./components/Menu/Menu";
 import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
 import { BaseContainer } from "./components/UI";
 import AnimalList from "./pages/AnimalList/AnimalList";
 import Voting from "./pages/Voting/Voting";
 import { ToastContainer } from "react-toastify";
+import NewAnimal from "./components/NewAnimal/NewAnimal";
+import NewJanitor from "./components/NewJanitor/NewJanitor";
 
 const App = () => {
   return (
@@ -20,7 +21,7 @@ const App = () => {
           <Login />
         </Route>
         <Route path="/register/animal">
-          <Register page="animal" />
+          <NewAnimal />
         </Route>
         <Route path="/voting">
           <Voting />
@@ -29,7 +30,7 @@ const App = () => {
           <AnimalList />
         </Route>
         <Route path="/register/janitor">
-          <Register page="janitor" />
+          <NewJanitor />
         </Route>
       </BaseContainer>
     </BrowserRouter>

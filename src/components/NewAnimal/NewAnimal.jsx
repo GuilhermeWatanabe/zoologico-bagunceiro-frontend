@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { BaseFormLegend, BaseInput, BaseButton, baseCard } from "../UI";
 import { instance } from "../../api/AxiosConfig";
+import { toast } from "react-toastify";
+import { Redirect } from "react-router-dom";
 
 const Form = styled.form`
   ${baseCard};
@@ -14,6 +16,7 @@ const NewAnimal = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [image, setImage] = useState();
+  const [redirect, setRedirect] = useState(false);
 
   const registerAnimal = () => {
     const form = new FormData();
@@ -30,11 +33,18 @@ const NewAnimal = () => {
       })
       .then((response) => {
         console.log(response);
+        toast.success("Cadastrado com sucesso!");
+        setRedirect(true);
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Erro ao cadastrar.");
       });
   };
+
+  if (redirect === true) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <Form

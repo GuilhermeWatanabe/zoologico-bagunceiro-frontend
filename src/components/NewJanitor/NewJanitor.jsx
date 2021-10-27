@@ -3,6 +3,7 @@ import { baseCard, BaseFormLegend, BaseInput, BaseButton } from "../UI";
 import { useState } from "react";
 import { instance } from "../../api/AxiosConfig";
 import { toast } from "react-toastify";
+import { Redirect } from "react-router-dom";
 
 const Form = styled.form`
   ${baseCard};
@@ -12,9 +13,9 @@ const NewJanitor = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const register = () => {
-    console.log(name, email, password);
     instance
       .post("janitor", {
         name: name,
@@ -24,12 +25,17 @@ const NewJanitor = () => {
       .then((response) => {
         console.log(response);
         toast.success("Cadastrado com sucesso!");
+        setRedirect(true);
       })
       .catch((response) => {
         console.log(response);
         toast.error("Erro ao cadastrar.");
       });
   };
+
+  if (redirect === true) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <Form
