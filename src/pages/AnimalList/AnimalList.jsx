@@ -23,6 +23,11 @@ const Table = styled.table`
       text-align: left;
     }
   }
+
+  td,
+  th {
+    height: 35px;
+  }
 `;
 
 const AnimalList = () => {
@@ -32,12 +37,29 @@ const AnimalList = () => {
     instance
       .get("animal")
       .then((response) => {
+        console.log(response);
         setAnimalList(response.data);
       })
       .catch(() => {
         toast.error("Erro ao buscar animais.");
       });
   }, []);
+
+  const disableAnimal = (id) => {
+    instance
+      .patch(`animal/${id}`)
+      .then(() => {
+        toast.success("Desabilitado com sucesso.");
+        let animalsListCopy = [...animalList];
+        let disabledAnimal = animalsListCopy[id - 1];
+        disabledAnimal.is_enabled = 0;
+        animalsListCopy[id - 1] = disabledAnimal;
+        setAnimalList(animalsListCopy);
+      })
+      .catch(() => {
+        toast.error("Erro ao tentar desativar.");
+      });
+  };
 
   return (
     <ContainerCard>
@@ -53,11 +75,23 @@ const AnimalList = () => {
         </thead>
         <tbody>
           {animalList.map((animal) => (
-            <tr key={animal}>
+            <tr key={animal.id}>
               <td>{animal.nickname}</td>
               <td>{animal.likes}</td>
               <td>{animal.dislikes}</td>
-              <td>{animal.is_enabled}</td>
+              <td>
+                {animal.is_enabled === 1 ? (
+                  <a
+                    onClick={() => {
+                      disableAnimal(animal.id);
+                    }}
+                  >
+                    Desabilitar
+                  </a>
+                ) : (
+                  "DESABILITADO"
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
