@@ -1,4 +1,8 @@
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
+import { instance } from "../../api/AxiosConfig";
+import GlobalVariables from "../../components/GlobalVariables/GlobalVariables";
 import { baseCard, BaseFormLegend } from "../../components/UI";
 import { lightRed, darkGreen } from "../../components/UI/variables";
 
@@ -51,26 +55,65 @@ const VotingButton = styled.button`
   }
 `;
 
+const Info = styled.p`
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+`;
+
 const Voting = () => {
+  const [list, setList] = useState([]);
+  const [count, setCount] = useState(0);
+  const userContext = useContext(GlobalVariables);
+
+  useEffect(() => {
+    console.log(
+      userContext.userId,
+      userContext.userType,
+      userContext.userToken
+    );
+    instance
+      .get(`animal/to-vote`, {
+        headers: {
+          Authorization: `Bearer ${userContext.userToken}`,
+        },
+      })
+      .then((response) => {
+        setList(response.data);
+      })
+      .catch(() => {
+        toast.error("Erro ao buscar lista.");
+      });
+  }, []);
+
   return (
     <Container>
-      <BaseFormLegend as="span">Votação</BaseFormLegend>
-      <VotingCard>
-        <AnimalImage
-          src={`https://images.pexels.com/photos/1996333/pexels-photo-1996333.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940`}
-          alt="anything"
-        />
-        <ButtonContainer>
-          <VotingButton like>
-            <i className="far fa-thumbs-up fa-2x"></i>
-            <span>Like</span>
-          </VotingButton>
-          <VotingButton>
-            <i className="far fa-thumbs-down fa-2x"></i>
-            <span>Dislike</span>
-          </VotingButton>
-        </ButtonContainer>
-      </VotingCard>
+      {list.length !== 0 ? (
+        <>
+          <BaseFormLegend as="span">Votação</BaseFormLegend>
+          <VotingCard>
+            <AnimalImage
+              src={`https://images.pexels.com/photos/1996333/pexels-photo-1996333.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940`}
+              alt="anything"
+            />
+            <Info>Apelido: {list[count]}</Info>
+            <Info>Nome Científico: </Info>
+            <Info>Ala:</Info>
+            <ButtonContainer>
+              <VotingButton like>
+                <i className="far fa-thumbs-up fa-2x"></i>
+                <span>Like</span>
+              </VotingButton>
+              <VotingButton>
+                <i className="far fa-thumbs-down fa-2x"></i>
+                <span>Dislike</span>
+              </VotingButton>
+            </ButtonContainer>
+          </VotingCard>
+        </>
+      ) : (
+        "NADA PARA MOSTRAR"
+      )}
     </Container>
   );
 };

@@ -10,10 +10,20 @@ import { ToastContainer } from "react-toastify";
 import AnimalForm from "./components/AnimalForm/AnimalForm";
 import NewJanitor from "./components/NewJanitor/NewJanitor";
 import { useState } from "react";
+import GlobalVariables from "./components/GlobalVariables/GlobalVariables";
 
 const App = () => {
   const [userId, setUserId] = useState(0);
   const [userType, setUserType] = useState("");
+  const [userToken, setUserToken] = useState("");
+  const userSettings = {
+    userId: userId,
+    userType: userType,
+    userToken: userToken,
+    setUserId,
+    setUserType,
+    setUserToken,
+  };
 
   let renderMenu;
   if (userId) {
@@ -21,31 +31,33 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
-      <GlobalStyle />
-      <ToastContainer />
-      {renderMenu}
-      <BaseContainer>
-        <Route exact path="/">
-          <Login setUserType={setUserType} setUserId={setUserId} />
-        </Route>
-        <Route path="/register/animal">
-          <AnimalForm userId={userId} />
-        </Route>
-        <Route path="/edit/animal">
-          <AnimalForm userId={userId} />
-        </Route>
-        <Route path="/voting">
-          <Voting />
-        </Route>
-        <Route path="/list">
-          <AnimalList />
-        </Route>
-        <Route path="/register/janitor">
-          <NewJanitor userId={userId} />
-        </Route>
-      </BaseContainer>
-    </BrowserRouter>
+    <GlobalVariables.Provider value={userSettings}>
+      <BrowserRouter>
+        <GlobalStyle />
+        <ToastContainer />
+        {renderMenu}
+        <BaseContainer>
+          <Route exact path="/">
+            <Login />
+          </Route>
+          <Route path="/register/animal">
+            <AnimalForm />
+          </Route>
+          <Route path="/edit/animal">
+            <AnimalForm />
+          </Route>
+          <Route path="/voting">
+            <Voting />
+          </Route>
+          <Route path="/list">
+            <AnimalList />
+          </Route>
+          <Route path="/register/janitor">
+            <NewJanitor />
+          </Route>
+        </BaseContainer>
+      </BrowserRouter>
+    </GlobalVariables.Provider>
   );
 };
 

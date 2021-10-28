@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Redirect } from "react-router";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { instance } from "../../api/AxiosConfig";
+import GlobalVariables from "../../components/GlobalVariables/GlobalVariables";
 import { BaseButton, BaseFormLegend, BaseInput } from "../../components/UI";
 
 const Container = styled.div`
@@ -29,10 +30,11 @@ const Form = styled.form`
   width: 50%;
 `;
 
-const Login = ({ setUserType, setUserId }) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const userContext = useContext(GlobalVariables);
 
   const signIn = () => {
     instance
@@ -41,10 +43,9 @@ const Login = ({ setUserType, setUserId }) => {
         password: password,
       })
       .then((response) => {
-        instance.defaults.headers.common["Authorization"] =
-          response.data.access_token;
-        setUserType(response.data.user_type);
-        setUserId(response.data.id);
+        userContext.setUserType(response.data.user_type);
+        userContext.setUserId(response.data.id);
+        userContext.setUserToken(response.data.access_token);
         setRedirect(true);
       })
       .catch(() => {

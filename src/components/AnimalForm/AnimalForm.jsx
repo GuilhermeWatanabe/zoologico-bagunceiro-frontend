@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { BaseFormLegend, BaseInput, BaseButton, baseCard } from "../UI";
 import { instance } from "../../api/AxiosConfig";
 import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";
+import GlobalVariables from "../GlobalVariables/GlobalVariables";
 
 const Form = styled.form`
   ${baseCard};
 `;
 
-const AnimalForm = ({ userId }) => {
+const AnimalForm = () => {
   const [nickname, setNickname] = useState("");
   const [sciName, setSciName] = useState("");
   const [zooWing, setZooWing] = useState("");
@@ -17,11 +18,12 @@ const AnimalForm = ({ userId }) => {
   const [password, setPassword] = useState("");
   const [image, setImage] = useState();
   const [redirect, setRedirect] = useState(false);
+  const userContext = useContext(GlobalVariables);
 
   useEffect(() => {
-    if (userId) {
+    if (userContext.userId) {
       instance
-        .get(`animal/${userId}`)
+        .get(`animal/${userContext.userId}`)
         .then((response) => {
           setNickname(response.data.nickname);
           setSciName(response.data.scientific_name);
@@ -84,7 +86,7 @@ const AnimalForm = ({ userId }) => {
     <Form
       onSubmit={(e) => {
         e.preventDefault();
-        if (userId) {
+        if (userContext.userId) {
           editAnimal();
         } else {
           registerAnimal();
