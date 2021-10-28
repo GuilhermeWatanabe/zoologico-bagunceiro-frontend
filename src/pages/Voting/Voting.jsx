@@ -86,25 +86,74 @@ const Voting = () => {
       });
   }, []);
 
+  const like = (like, id) => {
+    instance
+      .patch(
+        `animal/voting/${id}`,
+        {
+          like: like,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userContext.userToken}`,
+          },
+        }
+      )
+      .then(() => {
+        toast.success("Voto salvo!");
+      })
+      .catch(() => {
+        toast.error("Erro ao enviar voto.");
+      });
+  };
+
+  const dislike = (like, id) => {
+    instance
+      .patch(
+        `animal/voting/${id}`,
+        {
+          like: like,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userContext.userToken}`,
+          },
+        }
+      )
+      .then(() => {
+        toast.success("Voto salvo!");
+      })
+      .catch(() => {
+        toast.error("Erro ao enviar voto.");
+      });
+  };
+
   return (
     <Container>
       {list.length !== 0 ? (
         <>
           <BaseFormLegend as="span">Votação</BaseFormLegend>
           <VotingCard>
-            <AnimalImage
-              src={`https://images.pexels.com/photos/1996333/pexels-photo-1996333.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940`}
-              alt="anything"
-            />
-            <Info>Apelido: {list[count]}</Info>
-            <Info>Nome Científico: </Info>
-            <Info>Ala:</Info>
+            <AnimalImage src={list[count].image_url} alt="" />
+            <Info>Apelido: {list[count].nickname}</Info>
+            <Info>Nome Científico: {list[count].scientific_name}</Info>
+            <Info>Ala: {list[count].zoo_wing}</Info>
             <ButtonContainer>
-              <VotingButton like>
+              <VotingButton
+                onClick={() => {
+                  like("like", list[count].id);
+                }}
+                like
+              >
                 <i className="far fa-thumbs-up fa-2x"></i>
                 <span>Like</span>
               </VotingButton>
-              <VotingButton>
+              <VotingButton
+                onClick={() => {
+                  dislike("dislike", list[count].id);
+                }}
+                like
+              >
                 <i className="far fa-thumbs-down fa-2x"></i>
                 <span>Dislike</span>
               </VotingButton>
