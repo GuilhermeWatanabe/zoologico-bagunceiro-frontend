@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { baseCard, BaseFormLegend, BaseInput, BaseButton } from "../UI";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { instance } from "../../api/AxiosConfig";
 import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";
-import GlobalVariables from "../GlobalVariables/GlobalVariables";
+import { useCookies } from "react-cookie";
 
 const Form = styled.form`
   ${baseCard};
@@ -15,7 +15,7 @@ const NewJanitor = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const userContext = useContext(GlobalVariables);
+  const [cookies, setCookies] = useCookies();
 
   const register = () => {
     instance
@@ -27,7 +27,7 @@ const NewJanitor = () => {
       .then((response) => {
         console.log(response);
         toast.success("Cadastrado com sucesso!");
-        if (!userContext.userId) {
+        if (!cookies.id) {
           setRedirect(true);
         }
       })

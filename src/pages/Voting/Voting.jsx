@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { instance } from "../../api/AxiosConfig";
-import GlobalVariables from "../../components/GlobalVariables/GlobalVariables";
-import { baseCard, BaseFormLegend } from "../../components/UI";
+import { baseCard, BaseFormLegend, NothingToShow } from "../../components/UI";
 import { lightRed, darkGreen } from "../../components/UI/variables";
 
 const Container = styled.div`
@@ -64,26 +64,23 @@ const Info = styled.p`
 const Voting = () => {
   const [list, setList] = useState([]);
   const [count, setCount] = useState(0);
-  const userContext = useContext(GlobalVariables);
+  const [cookies, setCookies] = useCookies();
 
   useEffect(() => {
     console.log(
-      userContext.userId,
-      userContext.userType,
-      userContext.userToken
+      cookies.userType,
+      cookies.token,
+      cookies.id
     );
     instance
       .get(`animal/to-vote`, {
         headers: {
-          Authorization: `Bearer ${userContext.userToken}`,
+          Authorization: `Bearer ${cookies.token}`,
         },
       })
       .then((response) => {
         setList(response.data);
       })
-      .catch(() => {
-        toast.error("Erro ao buscar lista.");
-      });
   }, []);
 
   const like = (like, id) => {
@@ -95,7 +92,7 @@ const Voting = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${userContext.userToken}`,
+            Authorization: `Bearer ${cookies.token}`,
           },
         }
       )
@@ -116,7 +113,7 @@ const Voting = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${userContext.userToken}`,
+            Authorization: `Bearer ${cookies.token}`,
           },
         }
       )
@@ -143,7 +140,6 @@ const Voting = () => {
                 onClick={() => {
                   like("like", list[count].id);
                 }}
-                like
               >
                 <i className="far fa-thumbs-up fa-2x"></i>
                 <span>Like</span>
@@ -152,7 +148,6 @@ const Voting = () => {
                 onClick={() => {
                   dislike("dislike", list[count].id);
                 }}
-                like
               >
                 <i className="far fa-thumbs-down fa-2x"></i>
                 <span>Dislike</span>
@@ -161,7 +156,7 @@ const Voting = () => {
           </VotingCard>
         </>
       ) : (
-        "NADA PARA MOSTRAR"
+        <NothingToShow>Nenhum registro.</NothingToShow>
       )}
     </Container>
   );

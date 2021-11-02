@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BaseFormLegend, BaseInput, BaseButton, baseCard } from "../UI";
 import { instance } from "../../api/AxiosConfig";
 import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";
-import GlobalVariables from "../GlobalVariables/GlobalVariables";
+import { useCookies } from "react-cookie";
 
 const Form = styled.form`
   ${baseCard};
@@ -18,12 +18,12 @@ const AnimalForm = () => {
   const [password, setPassword] = useState("");
   const [image, setImage] = useState();
   const [redirect, setRedirect] = useState(false);
-  const userContext = useContext(GlobalVariables);
+  const [cookies, setCookies] = useCookies();
 
   useEffect(() => {
-    if (userContext.userId) {
+    if (cookies.id) {
       instance
-        .get(`animal/${userContext.userId}`)
+        .get(`animal/${cookies.id}`)
         .then((response) => {
           setNickname(response.data.nickname);
           setSciName(response.data.scientific_name);
@@ -86,7 +86,7 @@ const AnimalForm = () => {
     <Form
       onSubmit={(e) => {
         e.preventDefault();
-        if (userContext.userId) {
+        if (cookies.id) {
           editAnimal();
         } else {
           registerAnimal();

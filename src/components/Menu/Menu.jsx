@@ -3,9 +3,9 @@ import { Redirect } from "react-router";
 import { darkGreen, lightRed } from "../UI/variables";
 import { Link } from "react-router-dom";
 import { instance } from "../../api/AxiosConfig";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
-import GlobalVariables from "../GlobalVariables/GlobalVariables";
+import { useCookies } from "react-cookie";
 
 const NavBar = styled.nav`
   align-items: center;
@@ -53,13 +53,13 @@ const NavBar = styled.nav`
 
 const Menu = () => {
   const [redirect, setRedirect] = useState(false);
-  const userContext = useContext(GlobalVariables);
+  const [cookies, setCookies] = useCookies();
 
   const logout = () => {
     instance
       .post("logout", {
         headers: {
-          Authorization: `Bearer ${userContext.userToken}`,
+          Authorization: `Bearer ${cookies.token}`,
         },
       })
       .then(() => {
@@ -77,7 +77,7 @@ const Menu = () => {
   return (
     <NavBar>
       <ul>
-        {userContext.userType === "janitor" ? (
+        {cookies.userType === "janitor" ? (
           <>
             <Link to="/register/animal">
               <li>Novo Animal</li>

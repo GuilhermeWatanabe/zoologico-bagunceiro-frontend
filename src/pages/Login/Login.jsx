@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { useCookies } from "react-cookie";
 import { Redirect } from "react-router";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { instance } from "../../api/AxiosConfig";
-import GlobalVariables from "../../components/GlobalVariables/GlobalVariables";
 import { BaseButton, BaseFormLegend, BaseInput } from "../../components/UI";
 
 const Container = styled.div`
@@ -34,7 +34,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const userContext = useContext(GlobalVariables);
+  const [cookies, setCookies] = useCookies();
 
   const signIn = () => {
     instance
@@ -43,9 +43,9 @@ const Login = () => {
         password: password,
       })
       .then((response) => {
-        userContext.setUserType(response.data.user_type);
-        userContext.setUserId(response.data.id);
-        userContext.setUserToken(response.data.access_token);
+        setCookies("userType", response.data.user_type);
+        setCookies("token", response.data.access_token);
+        setCookies("id", response.data.id);
         setRedirect(true);
       })
       .catch(() => {

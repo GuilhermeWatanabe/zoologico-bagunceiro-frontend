@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { baseCard, BaseFormLegend } from "../../components/UI";
+import { baseCard, BaseFormLegend, NothingToShow } from "../../components/UI";
 import { darkGreen } from "../../components/UI/variables";
 import { useState, useEffect } from "react";
 import { instance } from "../../api/AxiosConfig";
@@ -33,18 +33,6 @@ const Table = styled.table`
 const AnimalList = () => {
   const [animalList, setAnimalList] = useState([]);
 
-  useEffect(() => {
-    instance
-      .get("animal")
-      .then((response) => {
-        console.log(response);
-        setAnimalList(response.data);
-      })
-      .catch(() => {
-        toast.error("Erro ao buscar animais.");
-      });
-  }, []);
-
   const disableAnimal = (id) => {
     instance
       .patch(`animal/${id}`)
@@ -74,26 +62,30 @@ const AnimalList = () => {
           </tr>
         </thead>
         <tbody>
-          {animalList.map((animal) => (
-            <tr key={animal.id}>
-              <td>{animal.nickname}</td>
-              <td>{animal.likes}</td>
-              <td>{animal.dislikes}</td>
-              <td>
-                {animal.is_enabled === 1 ? (
-                  <a
-                    onClick={() => {
-                      disableAnimal(animal.id);
-                    }}
-                  >
-                    Desabilitar
-                  </a>
-                ) : (
-                  "DESABILITADO"
-                )}
-              </td>
-            </tr>
-          ))}
+          {animalList.length === 0 ? (
+            <NothingToShow>Nenhum registro.</NothingToShow>
+          ) : (
+            animalList.map((animal) => (
+              <tr key={animal.id}>
+                <td>{animal.nickname}</td>
+                <td>{animal.likes}</td>
+                <td>{animal.dislikes}</td>
+                <td>
+                  {animal.is_enabled === 1 ? (
+                    <a
+                      onClick={() => {
+                        disableAnimal(animal.id);
+                      }}
+                    >
+                      Desabilitar
+                    </a>
+                  ) : (
+                    "DESABILITADO"
+                  )}
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </Table>
     </ContainerCard>

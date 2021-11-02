@@ -57,3 +57,11 @@ export const BaseContainer = styled.div`
     height: 100%;
     width: 100%;
 `;
+
+export const NothingToShow = styled.div`
+    content: 'Sem registro.';
+    font-size: 3em;
+    font-weight: bold;
+    padding: 3em 0;
+    text-align: center;
+`;
