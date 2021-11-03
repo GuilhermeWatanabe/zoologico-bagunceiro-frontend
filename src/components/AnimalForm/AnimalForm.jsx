@@ -21,7 +21,7 @@ const AnimalForm = () => {
   const [cookies, setCookies] = useCookies();
 
   useEffect(() => {
-    if (cookies.id) {
+    if (cookies.id && cookies.userType !== "janitor") {
       instance
         .get(`animal/${cookies.id}`)
         .then((response) => {
@@ -78,7 +78,7 @@ const AnimalForm = () => {
       });
   };
 
-  if (redirect === true) {
+  if (redirect === true && !cookies.id) {
     return <Redirect to="/" />;
   }
 
@@ -86,7 +86,7 @@ const AnimalForm = () => {
     <Form
       onSubmit={(e) => {
         e.preventDefault();
-        if (cookies.id) {
+        if (cookies.id && cookies.userType !== "janitor") {
           editAnimal();
         } else {
           registerAnimal();
